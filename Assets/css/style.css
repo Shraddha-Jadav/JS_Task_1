@@ -5,7 +5,8 @@
     --light-main-color: rgb(7, 80, 109);
     --white: white;
     --black: black;
-    --background-color: linear-gradient(90deg, rgb(199, 197, 241) 0%, rgb(148, 173, 206) 0%, rgb(154, 197, 206) 65%);
+    --background-color : linear-gradient(90deg, rgb(66, 58, 209) 0%, rgb(63, 108, 167) 0%, rgb(89, 191, 211) 65%);
+    --light-background-color: linear-gradient(90deg, rgb(199, 197, 241) 0%, rgb(148, 173, 206) 0%, rgb(154, 197, 206) 65%);
 }
 
 * {
@@ -78,7 +79,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20%;
 }
 
 .add:hover {
@@ -96,7 +97,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20%;
 }
 
 .delete:hover {
@@ -125,10 +126,16 @@ th {
 }
 
 .modal-body {
-    background: linear-gradient(90deg, rgb(66, 58, 209) 0%, rgb(63, 108, 167) 0%, rgb(89, 191, 211) 65%) !important;
+    background: var(--background-color);
 }
 
-.submit-btn {
+.submit-btn , .close-btn{
     border: 0.1px solid var(--main-color) !important;
     background: var(--background-color) !important;
+    width: 80px;
+}
+
+.submit-btn:hover, .close-btn:hover
+{
+    background: var(--light-background-color)!important;
 }

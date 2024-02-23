@@ -244,7 +244,7 @@ function addUserDetail(personalData) {
     let td8 = document.createElement("td");
     const editBtn = document.createElement("a");
     editBtn.setAttribute("data-bs-toggle", "modal");
-    editBtn.setAttribute("data-bs-target", "#exampleModal");
+    editBtn.setAttribute("data-bs-target", "#staticBackdrop");
     editBtn.classList.add("updateDataRecord", "bg-transparent");
     const editIcon = document.createElement("i");
     editIcon.classList.add("fas", "fa-edit");
@@ -345,5 +345,6 @@ function updateUser()
     addUserDetail(personalData);
     form.reset();
 }
+
 addBtn.addEventListener("click", addDetail);
 submit.addEventListener("click", saveData);
