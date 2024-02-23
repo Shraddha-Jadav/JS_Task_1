@@ -1,10 +1,11 @@
 const addBtn = document.querySelector(".add");
-const input = document.querySelector("tbody");
+const input = document.querySelector(".tb");
 const submit = document.querySelector(".submit-btn");
 const show = document.querySelector(".allDetail");
 const form = document.querySelector(".form");
 const dataTableContainer = document.getElementById("dataTableContainer");
-
+const userDataTableBody = document.querySelector(".user-data-table-body");
+let id = 0;
 // remove detail
 function removeDetail()
 {
@@ -58,7 +59,7 @@ function addDetail()
     btn.innerHTML = "&times";
     btn.style.cursor = "pointer";
 
-    // on click delete button 
+    // on click delete button form educational form
     btn.addEventListener("click", removeDetail);
 
     // create element for placeing input
@@ -95,7 +96,84 @@ function addDetail()
     
 }
 
-// show data in new page
+// remove user record
+function deleteDataRecord()
+{
+    var btn = this.parentElement;
+    var grandparent = btn.parentNode;
+    grandparent.parentNode.removeChild(grandparent);
+}
+
+// edit user record
+function editUserRecord()
+{
+
+}
+
+// add user record in table
+function addUserDetail(personalData)
+{
+    let v = JSON.stringify(personalData);
+    alert(v);
+    id++;
+    let tr = document.createElement("tr");
+    userDataTableBody.appendChild(tr);
+
+    let td1 = document.createElement("td");
+    tr.appendChild(td1);
+    // td1.appendChild(id);
+
+    let td2 = document.createElement("td");
+    tr.appendChild(td2);
+    td2.innerHTML = personalData.firstName;
+
+    let td3 = document.createElement("td");
+    tr.appendChild(td3);
+    td3.innerHTML = personalData.lastName;
+
+    let td4 = document.createElement("td");
+    tr.appendChild(td4);
+    td4.innerHTML = personalData.dob;
+
+    let td5 = document.createElement("td");
+    tr.appendChild(td5);
+    td5.innerHTML = personalData.email;
+
+    let td6 = document.createElement("td");
+    tr.appendChild(td6);
+    td6.innerHTML = personalData.address;
+
+    let td7 = document.createElement("td");
+    tr.appendChild(td7);
+    td7.innerHTML = personalData.graduationYear;;
+
+    let td8 = document.createElement("td");
+    const editBtn = document.createElement("a");
+    editBtn.classList.add('updateDataRecord', 'bg-transparent');
+    const editIcon = document.createElement("i");
+    editIcon.classList.add('fas', 'fa-edit');
+    tr.appendChild(td8);
+    td8.appendChild(editBtn);
+    editBtn.appendChild(editIcon);
+    editBtn.style.cursor = "pointer";
+
+    // click on edit btn
+    editBtn.addEventListener("click", editUserRecord);
+
+    let td9 = document.createElement("td");
+    const deleteBtn = document.createElement("a");
+    deleteBtn.classList.add('deleteDataRecord' , 'bg-transparent', 'fw-bold')
+    deleteBtn.innerHTML = "&times";
+    deleteBtn.style.cursor = "pointer";
+    tr.appendChild(td9);
+    td9.appendChild(deleteBtn);
+    // click on delete btn
+    deleteBtn.addEventListener("click", deleteDataRecord);
+
+    console.log(personalData);
+}
+
+// show data
 function saveData() {
     // Save personal data
     const personalData = {
@@ -117,13 +195,13 @@ function saveData() {
     rows.forEach(row => {
         const inputs = row.querySelectorAll("input");
         let rowData = {};
-
         inputs.forEach(input => {
             rowData[input.id] = input.value;
         });
-
         educationalData.push(rowData);
     });
+
+    console.log(educationalData);
 
     // Combine personal and educational data
     const userData = {
@@ -131,14 +209,18 @@ function saveData() {
         educational: educationalData
     };
 
+    console.log(userData);
+
     // Append new user data to the existing array
     allUserData.push(userData);
 
     // Save updated data to localStorage
     localStorage.setItem('allUserData', JSON.stringify(allUserData));
-    window.location.href = 'studentData.html';
+
+    addUserDetail(personalData);
     form.reset();
 }
+
 
 addBtn.addEventListener("click", addDetail);
 submit.addEventListener("click", saveData);
