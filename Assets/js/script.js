@@ -5,18 +5,19 @@ const show = document.querySelector(".allDetail");
 const form = document.querySelector(".form");
 const dataTableContainer = document.getElementById("dataTableContainer");
 const userDataTableBody = document.querySelector(".user-data-table-body");
+let allUserData = [];
+let editMode = false;
 let id = 0;
+
 // remove detail
-function removeDetail()
-{
+function removeDetail() {
     var btn = this.parentElement;
     var grandparent = btn.parentNode;
     grandparent.parentNode.removeChild(grandparent);
 }
 
 // add detail
-function addDetail()
-{
+function addDetail() {
     // create input elements
     const degree = document.createElement("input");
     degree.type = "text";
@@ -75,7 +76,7 @@ function addDetail()
     tr.appendChild(td2);
 
     const td3 = document.createElement("td");
-    td3.appendChild(startDate)
+    td3.appendChild(startDate);
     tr.appendChild(td3);
 
     const td4 = document.createElement("td");
@@ -92,36 +93,129 @@ function addDetail()
 
     const td7 = document.createElement("td");
     td7.appendChild(btn);
-    tr.appendChild(td7);   
-    
+    tr.appendChild(td7);
 }
 
-// remove user record
-function deleteDataRecord()
-{
-    var btn = this.parentElement;
-    var grandparent = btn.parentNode;
-    grandparent.parentNode.removeChild(grandparent);
+// update row after edit
+function updateData(row) {
+    console.log("update funvtion call");
+
+    // fetch personal data
+    const personalData = {
+        firstName: document.getElementById("fname").value,
+        lastName: document.getElementById("lname").value,
+        dob: document.getElementById("dob").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value,
+        graduationYear: document.getElementById("graduationYear").value,
+        id: id++,
+    };
+
+    //   fetch educational data
+    const rows = document.querySelectorAll(".tb tr");
+    const educationalData = [];
+    rows.forEach((row1) => {
+        const inputs = row1.querySelectorAll("input");
+        let rowData = {};
+        inputs.forEach((input) => {
+            rowData[input.id] = input.value;
+        });
+        educationalData.push(rowData);
+    });
+
+    //   combine both data
+    const userData = {
+        personal: personalData,
+        educational: educationalData,
+    };
+
+    console.log(userData);
+    // var t = parentNode.rowIndex - 1;
+    //console.log(t);
+    // var t = this.closest("tr");
+    const userId = parseInt(row.querySelector("td:first-child").innerHTML) - 1;
+    console.log(userId);
+
+    if (editMode) {
+        allUserData[userId] = userData;
+        
+        console.log(allUserData[userId]);
+        // Reset edit mode
+        editMode = false;
+
+        // Change button text back to "Submit"
+        submit.textContent = "Submit";
+
+        // Change the click event back to call saveData
+        submit.removeEventListener("click", updateData);
+        submit.addEventListener("click", saveData);
+    } else {
+        // Add new user data to the allUserData array
+        allUserData.push(userData);
+    }
+    addUserDetail(personalData);
+    console.log(userData);
+
+    // Reset the form
+    form.reset();
 }
 
 // edit user record
-function editUserRecord()
-{
+function editUserRecord() {
+    editMode = true;
+    submit.textContent = "Update";
 
+    submit.removeEventListener("click", saveData);
+    submit.addEventListener("click", () => updateData(row));
+
+    const row = this.closest("tr");
+    console.log(row);
+    const userId = parseInt(row.querySelector("td:first-child").innerHTML) - 1;
+
+    const userData = allUserData[userId];
+    console.log(userData);
+    document.getElementById("fname").value = userData.personal.firstName;
+    document.getElementById("lname").value = userData.personal.lastName;
+    document.getElementById("dob").value = userData.personal.dob;
+    document.getElementById("email").value = userData.personal.email;
+    document.getElementById("address").value = userData.personal.address;
+    document.getElementById("graduationYear").value = userData.personal.graduationYear;
+
+    input.innerHTML = "";
+
+    // Add educational data to the form
+    userData.educational.forEach((eduData) => {
+        addDetail();
+        const inputs = document.querySelectorAll(".tb tr:last-child input");
+        inputs[0].value = eduData.degree;
+        inputs[1].value = eduData.school;
+        inputs[2].value = eduData.startDate;
+        inputs[3].value = eduData.passYear;
+        inputs[4].value = eduData.percentage;
+        inputs[5].value = eduData.backlog;
+    });
+}
+// remove user record
+function deleteDataRecord() {
+    let deleteAns = "Are you sure to delete a record??";
+    if (confirm(deleteAns) == true) {
+        var btn = this.parentElement;
+        var grandparent = btn.parentNode;
+        var rowIndex = Array.from(grandparent.parentNode.children).indexOf(grandparent);
+        allUserData.splice(rowIndex, 1);
+        grandparent.parentNode.removeChild(grandparent);
+    }
 }
 
 // add user record in table
-function addUserDetail(personalData)
-{
+function addUserDetail(personalData) {
     let v = JSON.stringify(personalData);
-    alert(v);
-    id++;
     let tr = document.createElement("tr");
     userDataTableBody.appendChild(tr);
 
     let td1 = document.createElement("td");
     tr.appendChild(td1);
-    // td1.appendChild(id);
+    td1.innerHTML = personalData.id + 1;
 
     let td2 = document.createElement("td");
     tr.appendChild(td2);
@@ -145,13 +239,15 @@ function addUserDetail(personalData)
 
     let td7 = document.createElement("td");
     tr.appendChild(td7);
-    td7.innerHTML = personalData.graduationYear;;
+    td7.innerHTML = personalData.graduationYear;
 
     let td8 = document.createElement("td");
     const editBtn = document.createElement("a");
-    editBtn.classList.add('updateDataRecord', 'bg-transparent');
+    editBtn.setAttribute("data-bs-toggle", "modal");
+    editBtn.setAttribute("data-bs-target", "#exampleModal");
+    editBtn.classList.add("updateDataRecord", "bg-transparent");
     const editIcon = document.createElement("i");
-    editIcon.classList.add('fas', 'fa-edit');
+    editIcon.classList.add("fas", "fa-edit");
     tr.appendChild(td8);
     td8.appendChild(editBtn);
     editBtn.appendChild(editIcon);
@@ -162,65 +258,92 @@ function addUserDetail(personalData)
 
     let td9 = document.createElement("td");
     const deleteBtn = document.createElement("a");
-    deleteBtn.classList.add('deleteDataRecord' , 'bg-transparent', 'fw-bold')
+    deleteBtn.classList.add("deleteDataRecord", "bg-transparent", "fw-bold");
     deleteBtn.innerHTML = "&times";
     deleteBtn.style.cursor = "pointer";
     tr.appendChild(td9);
     td9.appendChild(deleteBtn);
     // click on delete btn
     deleteBtn.addEventListener("click", deleteDataRecord);
-
-    console.log(personalData);
 }
 
 // show data
 function saveData() {
     // Save personal data
     const personalData = {
-        firstName: document.getElementById('fname').value,
-        lastName: document.getElementById('lname').value,
-        dob: document.getElementById('dob').value,
-        email: document.getElementById('email').value,
-        address: document.getElementById('address').value,
-        graduationYear: document.getElementById('graduationYear').value
+        firstName: document.getElementById("fname").value,
+        lastName: document.getElementById("lname").value,
+        dob: document.getElementById("dob").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value,
+        graduationYear: document.getElementById("graduationYear").value,
+        id: id++,
     };
-
-    // Retrieve existing data or initialize an empty array
-    let allUserData = JSON.parse(localStorage.getItem('allUserData')) || [];
 
     // Save educational data
     const rows = document.querySelectorAll(".tb tr");
     const educationalData = [];
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
         const inputs = row.querySelectorAll("input");
         let rowData = {};
-        inputs.forEach(input => {
+        inputs.forEach((input) => {
             rowData[input.id] = input.value;
         });
         educationalData.push(rowData);
     });
 
-    console.log(educationalData);
-
     // Combine personal and educational data
     const userData = {
+        // id: allUserData.length + 1,
         personal: personalData,
-        educational: educationalData
+        educational: educationalData,
     };
 
-    console.log(userData);
-
-    // Append new user data to the existing array
     allUserData.push(userData);
 
-    // Save updated data to localStorage
-    localStorage.setItem('allUserData', JSON.stringify(allUserData));
-
+    //   to add user detail in table
     addUserDetail(personalData);
     form.reset();
 }
 
+function updateUser()
+{
+    const personalData = {
+        firstName: document.getElementById("fname").value,
+        lastName: document.getElementById("lname").value,
+        dob: document.getElementById("dob").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value,
+        graduationYear: document.getElementById("graduationYear").value,
+        id: id++,
+    };
 
+    // Save educational data
+    const rows = document.querySelectorAll(".tb tr");
+    const educationalData = [];
+
+    rows.forEach((row) => {
+        const inputs = row.querySelectorAll("input");
+        let rowData = {};
+        inputs.forEach((input) => {
+            rowData[input.id] = input.value;
+        });
+        educationalData.push(rowData);
+    });
+
+    // Combine personal and educational data
+    const userData = {
+        // id: allUserData.length + 1,
+        personal: personalData,
+        educational: educationalData,
+    };
+
+    allUserData.push(userData);
+
+    //   to add user detail in table
+    addUserDetail(personalData);
+    form.reset();
+}
 addBtn.addEventListener("click", addDetail);
 submit.addEventListener("click", saveData);

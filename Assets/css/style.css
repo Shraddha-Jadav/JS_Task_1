@@ -1,35 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@100&family=Inter:wght@100;500&family=Poppins:wght@400;500&display=swap");
 
-:root
-{
+:root {
     --main-color: rgb(1, 57, 80);
     --light-main-color: rgb(7, 80, 109);
     --white: white;
     --black: black;
-    --background-color:  linear-gradient(90deg, rgb(199, 197, 241) 0%, rgb(148, 173, 206) 0%, rgb(154, 197, 206) 65%);
+    --background-color: linear-gradient(90deg, rgb(199, 197, 241) 0%, rgb(148, 173, 206) 0%, rgb(154, 197, 206) 65%);
 }
 
-*
-{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
-  font-family: "Inter", sans-serif;
-  width: 100%;
-  min-height: 100vh;
-  background: var(--background-color);
+body {
+    font-family: "Inter", sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--background-color);
 }
 
-.container
-{
-    margin-left: auto!important;
-    margin-right: auto!important;
-    margin-top: 100px!important;
+.container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 100px !important;
     margin-bottom: auto;
-    padding: 10px 50px!important;
+    padding: 10px 50px !important;
     border-radius: 5px;
     box-shadow: 1px 1px 6px var(--black);
 }
@@ -37,23 +34,19 @@ body{
 
 /* all user data */
 
-.user-data-title
-{
-    color: var(--main-color)!important;
+.user-data-title {
+    color: var(--main-color) !important;
 }
 
-.add-user-btn
-{
+.add-user-btn {
     background-color: var(--main-color);
 }
 
-.add-user-btn:hover
-{
+.add-user-btn:hover {
     background-color: var(--light-main-color);
 }
 
-.addDetail
-{
+.addDetail {
     height: 4rem;
     width: 100%;
     color: var(--white);
@@ -66,18 +59,15 @@ body{
 
 /* pop-up menu  */
 
-.form-heading
-{
+.form-heading {
     color: rgb(255, 255, 255);
 }
 
-.form-label
-{
+.form-label {
     color: white;
 }
 
-.add
-{
+.add {
     text-decoration: none;
     width: 30px;
     height: 30px;
@@ -87,17 +77,15 @@ body{
     font-weight: normal;
     display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     border-radius: 50%;
 }
 
-.add:hover
-{
+.add:hover {
     background-color: rgb(5, 83, 5);
 }
 
-.delete
-{
+.delete {
     text-decoration: none;
     width: 30px;
     height: 30px;
@@ -107,29 +95,40 @@ body{
     font-weight: normal;
     display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     border-radius: 50%;
 }
 
-.delete:hover
-{
+.delete:hover {
     background-color: rgb(255, 44, 44);
     box-shadow: 1px 1px 4px rgb(175, 175, 175);
 }
 
-tbody, td, tfoot, th, thead, tr {
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
     border-color: inherit;
     border-style: solid;
     border-width: 0;
     /* border: 0; */
 }
 
-table, td, tr, thead, th
-{
-    background-color: transparent!important;
+table,
+td,
+tr,
+thead,
+th {
+    background-color: transparent !important;
 }
 
-.modal-body
-{
-    background: linear-gradient(90deg, rgb(66, 58, 209) 0%, rgb(63, 108, 167) 0%, rgb(89, 191, 211) 65%)!important;
+.modal-body {
+    background: linear-gradient(90deg, rgb(66, 58, 209) 0%, rgb(63, 108, 167) 0%, rgb(89, 191, 211) 65%) !important;
+}
+
+.submit-btn {
+    border: 0.1px solid var(--main-color) !important;
+    background: var(--background-color) !important;
 }
