@@ -16,89 +16,9 @@ function removeDetail() {
     grandparent.parentNode.removeChild(grandparent);
 }
 
-// add detail
-function addDetail() {
-    // create input elements
-    const degree = document.createElement("input");
-    degree.type = "text";
-    degree.className = "form-control";
-    degree.id = "degree";
-
-    const school = document.createElement("input");
-    school.type = "text";
-    school.className = "form-control";
-    school.id = "school";
-
-    const startDate = document.createElement("input");
-    startDate.type = "date";
-    startDate.className = "form-control";
-    startDate.id = "startDate";
-
-    const passYear = document.createElement("input");
-    passYear.type = "date";
-    passYear.className = "form-control";
-    passYear.id = "passYear";
-
-    const percentage = document.createElement("input");
-    percentage.type = "number";
-    percentage.placeholder = "don't use % sign";
-    percentage.min = "0";
-    percentage.max = "100";
-    percentage.className = "form-control";
-    percentage.id = "percentage";
-
-    const backlog = document.createElement("input");
-    backlog.type = "number";
-    backlog.placeholder = "if any";
-    backlog.min = "0";
-    backlog.max = "10";
-    backlog.className = "form-control";
-    backlog.id = "backlog";
-
-    const btn = document.createElement("a");
-    btn.className = "delete";
-    btn.innerHTML = "&times";
-    btn.style.cursor = "pointer";
-
-    // on click delete button form educational form
-    btn.addEventListener("click", removeDetail);
-
-    // create element for placeing input
-    const tr = document.createElement("tr");
-    input.appendChild(tr);
-
-    const td1 = document.createElement("td");
-    tr.appendChild(td1);
-    td1.appendChild(degree);
-
-    const td2 = document.createElement("td");
-    td2.appendChild(school);
-    tr.appendChild(td2);
-
-    const td3 = document.createElement("td");
-    td3.appendChild(startDate);
-    tr.appendChild(td3);
-
-    const td4 = document.createElement("td");
-    td4.appendChild(passYear);
-    tr.appendChild(td4);
-
-    const td5 = document.createElement("td");
-    td5.appendChild(percentage);
-    tr.appendChild(td5);
-
-    const td6 = document.createElement("td");
-    td6.appendChild(backlog);
-    tr.appendChild(td6);
-
-    const td7 = document.createElement("td");
-    td7.appendChild(btn);
-    tr.appendChild(td7);
-}
-
 // update row after edit
 function updateData(row) {
-    console.log("update funvtion call");
+    console.log("update function call");
 
     // fetch personal data
     const personalData = {
@@ -130,10 +50,8 @@ function updateData(row) {
     };
 
     console.log(userData);
-    // var t = parentNode.rowIndex - 1;
-    //console.log(t);
-    // var t = this.closest("tr");
-    const userId = parseInt(row.querySelector("td:first-child").innerHTML) - 1;
+    var t = this.closest("tr");
+    const userId = parseInt(t.querySelector("td:first-child").innerHTML) - 1;
     console.log(userId);
 
     if (editMode) {
@@ -159,6 +77,7 @@ function updateData(row) {
     // Reset the form
     form.reset();
 }
+
 
 // edit user record
 function editUserRecord() {
@@ -194,6 +113,8 @@ function editUserRecord() {
         inputs[4].value = eduData.percentage;
         inputs[5].value = eduData.backlog;
     });
+
+    console.log(allUserData);
 }
 // remove user record
 function deleteDataRecord() {
@@ -265,6 +186,86 @@ function addUserDetail(personalData) {
     td9.appendChild(deleteBtn);
     // click on delete btn
     deleteBtn.addEventListener("click", deleteDataRecord);
+}
+
+// add detail
+function addDetail() {
+    // create input elements
+    const degree = document.createElement("input");
+    degree.type = "text";
+    degree.className = "form-control";
+    degree.id = "degree";
+
+    const school = document.createElement("input");
+    school.type = "text";
+    school.className = "form-control";
+    school.id = "school";
+
+    const startDate = document.createElement("input");
+    startDate.type = "date";
+    startDate.className = "form-control";
+    startDate.id = "startDate";
+
+    const passYear = document.createElement("input");
+    passYear.type = "date";
+    passYear.className = "form-control";
+    passYear.id = "passYear";
+
+    const percentage = document.createElement("input");
+    percentage.type = "number";
+    percentage.placeholder = "don't use % sign";
+    percentage.min = "0";
+    percentage.max = "100";
+    percentage.className = "form-control";
+    percentage.id = "percentage";
+
+    const backlog = document.createElement("input");
+    backlog.type = "number";
+    backlog.placeholder = "if any";
+    backlog.min = "0";
+    backlog.max = "10";
+    backlog.className = "form-control";
+    backlog.id = "backlog";
+
+    const btn = document.createElement("a");
+    btn.className = "delete";
+    btn.innerHTML = "&times";
+    btn.style.cursor = "pointer";
+
+    // on click delete button form educational form
+    btn.addEventListener("click", removeDetail);
+
+    // create element for placing input
+    const tr = document.createElement("tr");
+    input.appendChild(tr);
+
+    const td1 = document.createElement("td");
+    tr.appendChild(td1);
+    td1.appendChild(degree);
+
+    const td2 = document.createElement("td");
+    td2.appendChild(school);
+    tr.appendChild(td2);
+
+    const td3 = document.createElement("td");
+    td3.appendChild(startDate);
+    tr.appendChild(td3);
+
+    const td4 = document.createElement("td");
+    td4.appendChild(passYear);
+    tr.appendChild(td4);
+
+    const td5 = document.createElement("td");
+    td5.appendChild(percentage);
+    tr.appendChild(td5);
+
+    const td6 = document.createElement("td");
+    td6.appendChild(backlog);
+    tr.appendChild(td6);
+
+    const td7 = document.createElement("td");
+    td7.appendChild(btn);
+    tr.appendChild(td7);
 }
 
 // show data
@@ -345,6 +346,12 @@ function updateUser()
     addUserDetail(personalData);
     form.reset();
 }
+
+addBtn.addEventListener("click", function() {
+    addDetail();
+    editMode = false; // Reset edit mode
+    submit.textContent = "Submit"; // Change button text back to "Submit"
+});
 
 addBtn.addEventListener("click", addDetail);
 submit.addEventListener("click", saveData);
