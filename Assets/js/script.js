@@ -321,7 +321,7 @@ function addUserDetail(personalData, id) {
     deleteBtn.addEventListener("click", deleteDataRecord);
 }
 
-// saveDAta --> take data from user in input feild
+// saveDAta --> take data from user in input Field
 function saveData() {
 
     // fetch personal data
