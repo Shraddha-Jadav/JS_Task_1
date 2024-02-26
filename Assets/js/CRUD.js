@@ -7,7 +7,7 @@ let allUserData = [];
 function onFormSubmit() {
   if (validate()) {
     var formData = readFormData();
-    if (selectedRow == null) 
+    if (selectedRow == null && validate()) 
       insertNewRecord(formData);
     else
     {
