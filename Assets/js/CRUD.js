@@ -5,10 +5,105 @@ var selectedRow = null;
 let allUserData = [];
 
 function onFormSubmit() {
-  var formData = readFormData();
-  if (selectedRow == null) insertNewRecord(formData);
-  else updateRecord(formData);
-  resetForm();
+  if (validate()) {
+    var formData = readFormData();
+    if (selectedRow == null) 
+      insertNewRecord(formData);
+    else
+    {
+      alert(isValid)
+      if (validate()) {
+        console.log(isValid)
+        updateRecord(formData);
+      }
+    }
+    resetForm();
+  }
+}
+
+function validate() {
+  isValid = true;
+  const fname = document.getElementById("fname").value;
+  const dob = document.getElementById("dob").value;
+  const email = document.getElementById("email").value;
+  const address = document.getElementById("address").value;
+  const graduation = document.getElementById("graduationYear").value;
+
+  const currentDate = new Date();
+  const dobFormat = new Date(dob);
+  const dobYear = dobFormat.getFullYear();
+  const currentYear = currentDate.getFullYear();
+  const gradYear = parseInt(graduation.slice(0, 4));
+  const yearDiff = currentYear - dobYear;
+  const gradDiff = currentYear - gradYear;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+  if (fname.trim() == "") {
+    document.querySelector("#fname").classList.add("border-danger");
+    isValid = false;
+  } else {
+    document.querySelector("#fname").classList.remove("border-danger");
+    isValid = true;
+  }
+  console.log(yearDiff)
+  if (yearDiff < 18) {
+    document.getElementById("dobError").innerHTML = "Min age should be 18!";
+    document.getElementById("dobError").classList.remove("error");
+    document.querySelector("#dob").classList.add("border-danger");
+    isValid = false;
+    alert("if")
+  } else if (dob.trim() == "") {
+    document.getElementById("dobError").innerHTML ="date of birth Email can't be empty!";
+    document.querySelector("#dob").classList.add("border-danger");
+    isValid = false;
+    alert("else if")
+  } else {
+    document.getElementById("dobError").classList.add("error");
+    document.querySelector("#dob").classList.remove("border-danger");
+    isValid = true;
+    alert("else")
+  }
+
+  if (email.trim() == "") {
+    document.querySelector("#email").classList.add("border-danger");
+    isValid = false;
+  } else if (!emailRegex.test(email)) {
+    document.getElementById("emailError").classList.remove("error");
+    document.getElementById("emailError").innerHTML = "Email format is wrong!";
+    document.querySelector("#email").classList.add("border-danger");
+    isValid = false;
+  } else {
+    document.getElementById("emailError").classList.add("error");
+    document.querySelector("#email").classList.remove("border-danger");
+    isValid = true;
+  }
+
+  if (address.trim() == "") {
+    document.querySelector("#address").classList.add("border-danger");
+    isValid = false;
+  } else {
+    document.getElementById("emailError").classList.add("error");
+    document.querySelector("#address").classList.remove("border-danger");
+    isValid = true;
+  }
+
+  if (graduation == "") {
+    document.querySelector("#graduationYear").classList.add("border-danger");
+    isValid = false;
+  } else if (gradDiff < 1) {
+    document.getElementById("gyearError").classList.remove("error");
+    document.getElementById("gyearError").innerHTML =
+      "Graduation Year must be before current Year!";
+    document.querySelector("#graduationYear").classList.add("border-danger");
+    isValid = false;
+  } else {
+    document.getElementById("gyearError").classList.add("error");
+    document.querySelector("#graduationYear").classList.remove("border-danger");
+    isValid = true;
+  }
+
+  return isValid;
 }
 
 function readFormData() {
@@ -79,24 +174,35 @@ function insertNewRecord(data) {
   cell8.innerHTML = `<a onClick="onDelete(this)" class="deleteDataRecord, bg-transparent, fw-bold" style="cursor: pointer";>&times</a>`;
 
   eduBody.innerHTML = `<tr>
-    <td><input type="text" class="form-control me-3 my-2" id="degree" value="10th" disabled></td>
-    <td><input type="text" class="form-control me-3 my-2" id="school"></td>
-    <td><input type="date" class="form-control me-3 my-2" id="startDate"></td>
-    <td><input type="date" class="form-control me-3 my-2" id="passYear"></td>
-    <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign"></td>
-    <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any"></td>
+    <td><input type="text" class="form-control me-3 my-2" id="degree" value="10th" disabled required></td>
+    <td><input type="text" class="form-control me-3 my-2" id="school" required></td>
+    <td><input type="date" class="form-control me-3 my-2" id="startDate" required></td>
+    <td><input type="date" class="form-control me-3 my-2" id="passYear" required></td>
+    <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign" required></td>
+    <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any" required></td>
     <td class="invisible"></td>
   </tr>
   <tr>
-    <td><input type="text" class="form-control me-3 my-2" id="degree" value="12th" disabled></td>
-    <td><input type="text" class="form-control me-3 my-2" id="school"></td>
-    <td><input type="date" class="form-control me-3 my-2" id="startDate"></td>
-    <td><input type="date" class="form-control me-3 my-2" id="passYear"></td>
-    <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign"></td>
-    <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any"></td>
+    <td><input type="text" class="form-control me-3 my-2" id="degree" value="12th" disabled required></td>
+    <td><input type="text" class="form-control me-3 my-2" id="school" required></td>
+    <td><input type="date" class="form-control me-3 my-2" id="startDate" required></td>
+    <td><input type="date" class="form-control me-3 my-2" id="passYear" required></td>
+    <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign" required></td>
+    <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any" required></td>
     <td class="invisible"></td>
   </tr>`;
+
+  console.log(allUserData);
+
+  let modal = document.getElementById("staticBackdrop");
+  let closeBtn = modal.querySelector('[data-bs-dismiss = "modal"]')
+  closeBtn.click();
 }
+
+document.querySelectorAll(".form-control[required]").forEach((input) => {
+  input.addEventListener("input", validate);
+  input.addEventListener("change", validate);
+});
 
 function resetForm() {
   form.reset();
@@ -115,24 +221,24 @@ function onEdit(td) {
   document.getElementById("dob").value = selectedRow.cells[3].innerHTML;
   document.getElementById("email").value = selectedRow.cells[4].innerHTML;
   document.getElementById("address").value = selectedRow.cells[5].innerHTML;
-  document.getElementById("graduationYear").value =
-    selectedRow.cells[6].innerHTML;
+  document.getElementById("graduationYear").value = selectedRow.cells[6].innerHTML;
 
-  let userData = allUserData[id-1].educational;
+  let userData = allUserData[id - 1].educational;
   eduBody.innerHTML = "";
+
   // Populate educational data fields
   if (userData) {
     userData.forEach((eduData) => {
       let newRow = document.createElement("tr");
       newRow.innerHTML = `
-                <td><input type="text" id="degree" value="${eduData.degree}"></td>
-                <td><input type="text" id="school" value="${eduData.school}"></td>
-                <td><input type="date" id="startDate" value="${eduData.startDate}"></td>
-                <td><input type="date" id="passYear" value="${eduData.passYear}"></td>
-                <td><input type="number" id="percentage" value="${eduData.percentage}"></td>
-                <td><input type="number" id="backlog" value="${eduData.backlog}"></td>
-                <td><a class="delete" onclick="removeDetail()">×</a></td>
-            `;
+                  <td><input type="text" id="degree" class="form-control" value="${eduData.degree}" required></td>
+                  <td><input type="text" id="school" class="form-control" value="${eduData.school}" required></td>
+                  <td><input type="date" id="startDate" class="form-control" value="${eduData.startDate}" required></td>
+                  <td><input type="date" id="passYear" class="form-control" value="${eduData.passYear}" required></td>
+                  <td><input type="number" id="percentage" class="form-control" value="${eduData.percentage}" required></td>
+                  <td><input type="number" id="backlog" class="form-control" value="${eduData.backlog}" required></td>
+                  <td><a class="delete" onclick="removeUpdatedEduRow()">&times</a></td>
+              `;
       eduBody.appendChild(newRow);
     });
   }
@@ -146,9 +252,35 @@ function updateRecord(formData) {
   selectedRow.cells[4].innerHTML = formData.personal.email;
   selectedRow.cells[5].innerHTML = formData.personal.address;
   selectedRow.cells[6].innerHTML = formData.personal.graduationYear;
-  eduBody.innerHTML = "";
+  // eduBody.innerHTML = "";
+  let id = selectedRow.cells[0].innerHTML;
+  allUserData[id - 1].educational = formData.educational;
+
   resetForm();
+  eduBody.innerHTML = `<tr>
+  <td><input type="text" class="form-control me-3 my-2" id="degree" value="10th" disabled reqired></td>
+  <td><input type="text" class="form-control me-3 my-2" id="school" reqired></td>
+  <td><input type="date" class="form-control me-3 my-2" id="startDate" reqired></td>
+  <td><input type="date" class="form-control me-3 my-2" id="passYear" reqired></td>
+  <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign" reqired></td>
+  <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any" reqired></td>
+  <td class="invisible"></td>
+</tr>
+<tr>
+  <td><input type="text" class="form-control me-3 my-2" id="degree" value="12th" disabled reqired></td>
+  <td><input type="text" class="form-control me-3 my-2" id="school" reqired></td>
+  <td><input type="date" class="form-control me-3 my-2" id="startDate" reqired></td>
+  <td><input type="date" class="form-control me-3 my-2" id="passYear" reqired></td>
+  <td><input type="number" min="0" max="100" class="form-control me-3 my-2" id="percentage" placeholder="don't use % sign" reqired></td>
+  <td><input type="number" min="0" max="10" class="form-control me-3 my-2" id="backlog" placeholder="if any" reqired></td>
+  <td class="invisible"></td>
+</tr>`;
+
+let modal = document.getElementById("staticBackdrop");
+  let closeBtn = modal.querySelector('[data-bs-dismiss = "modal"]')
+  closeBtn.click();
   submit.innerHTML = "submit";
+
 }
 
 function onDelete(td) {
@@ -165,86 +297,48 @@ function onDelete(td) {
 }
 
 function addNewEduRow() {
-  // create input elements
-  const degree = document.createElement("input");
-  degree.type = "text";
-  degree.className = "form-control";
-  degree.id = "degree";
+  let newEduField = document.createElement("tr");
 
-  const school = document.createElement("input");
-  school.type = "text";
-  school.className = "form-control";
-  school.id = "school";
-
-  const startDate = document.createElement("input");
-  startDate.type = "date";
-  startDate.className = "form-control";
-  startDate.id = "startDate";
-
-  const passYear = document.createElement("input");
-  passYear.type = "date";
-  passYear.className = "form-control";
-  passYear.id = "passYear";
-
-  const percentage = document.createElement("input");
-  percentage.type = "number";
-  percentage.placeholder = "don't use % sign";
-  percentage.min = "0";
-  percentage.max = "100";
-  percentage.className = "form-control";
-  percentage.id = "percentage";
-
-  const backlog = document.createElement("input");
-  backlog.type = "number";
-  backlog.placeholder = "if any";
-  backlog.min = "0";
-  backlog.max = "10";
-  backlog.className = "form-control";
-  backlog.id = "backlog";
-
-  const btn = document.createElement("a");
-  btn.className = "delete";
-  btn.innerHTML = "&times";
-  btn.style.cursor = "pointer";
-
-  // on click delete button form educational form
-  btn.addEventListener("click", removeEduRow);
-
-  // create element for placing input
-  const tr = document.createElement("tr");
-  eduBody.appendChild(tr);
-
-  const td1 = document.createElement("td");
-  tr.appendChild(td1);
-  td1.appendChild(degree);
-
-  const td2 = document.createElement("td");
-  td2.appendChild(school);
-  tr.appendChild(td2);
-
-  const td3 = document.createElement("td");
-  td3.appendChild(startDate);
-  tr.appendChild(td3);
-
-  const td4 = document.createElement("td");
-  td4.appendChild(passYear);
-  tr.appendChild(td4);
-
-  const td5 = document.createElement("td");
-  td5.appendChild(percentage);
-  tr.appendChild(td5);
-
-  const td6 = document.createElement("td");
-  td6.appendChild(backlog);
-  tr.appendChild(td6);
-
-  const td7 = document.createElement("td");
-  td7.appendChild(btn);
-  tr.appendChild(td7);
+  newEduField.innerHTML = `
+  <td>
+    <input type="text" class="form-control" id="degree" required><br>
+    <span id="degreeError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <input type="text" class="form-control" id="school" required><br>
+    <span id="schoolError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <input type="date" class="form-control" id="startDate" required><br>
+    <span id="startDateError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <input type="date" class="form-control" id="passYear" required><br>
+    <span id="passYearError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <input type="number" class="form-control" id="percentage"  min="0" max="100" placeholder="Don't use % sign" step="0.01" required><br>
+    <span id="percentageError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <input type="number" class="form-control" id="backlog" min="0" placeholder="If Any" required><br>
+    <span id="backlogError" class="error d-inline-block text-danger "></span>
+  </td>
+  <td>
+    <a class="delete" style="cursor: pointer" onclick="removeEduRow()">&times</a>
+  </td>
+    `;
+  eduBody.appendChild(newEduField);
 }
 
 function removeEduRow() {
   var btn = this.parentElement;
   var grandparent = btn.parentNode;
   grandparent.parentNode.removeChild(grandparent);
+}
+
+function removeUpdatedEduRow() {
+  var btn = event.target;
+  var row = btn.parentNode.parentNode;
+  row.parentNode.removeChild(row);
 }
