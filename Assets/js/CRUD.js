@@ -11,7 +11,6 @@ function onFormSubmit() {
       insertNewRecord(formData);
     else
     {
-      alert(isValid)
       if (validate()) {
         console.log(isValid)
         updateRecord(formData);
@@ -44,7 +43,7 @@ function validate() {
     isValid = false;
   } else {
     document.querySelector("#fname").classList.remove("border-danger");
-    isValid = true;
+    // isValid = true;
   }
   console.log(yearDiff)
   if (yearDiff < 18) {
@@ -52,17 +51,16 @@ function validate() {
     document.getElementById("dobError").classList.remove("error");
     document.querySelector("#dob").classList.add("border-danger");
     isValid = false;
-    alert("if")
   } else if (dob.trim() == "") {
     document.getElementById("dobError").innerHTML ="date of birth Email can't be empty!";
     document.querySelector("#dob").classList.add("border-danger");
     isValid = false;
-    alert("else if")
-  } else {
+    // isValid = true;
+  }
+  else
+  {
     document.getElementById("dobError").classList.add("error");
     document.querySelector("#dob").classList.remove("border-danger");
-    isValid = true;
-    alert("else")
   }
 
   if (email.trim() == "") {
@@ -76,7 +74,7 @@ function validate() {
   } else {
     document.getElementById("emailError").classList.add("error");
     document.querySelector("#email").classList.remove("border-danger");
-    isValid = true;
+    // isValid = true;
   }
 
   if (address.trim() == "") {
@@ -85,7 +83,7 @@ function validate() {
   } else {
     document.getElementById("emailError").classList.add("error");
     document.querySelector("#address").classList.remove("border-danger");
-    isValid = true;
+    // isValid = true;
   }
 
   if (graduation == "") {
@@ -100,7 +98,7 @@ function validate() {
   } else {
     document.getElementById("gyearError").classList.add("error");
     document.querySelector("#graduationYear").classList.remove("border-danger");
-    isValid = true;
+    // isValid = true;
   }
 
   return isValid;
@@ -192,7 +190,7 @@ function insertNewRecord(data) {
     <td class="invisible"></td>
   </tr>`;
 
-  console.log(allUserData);
+  alert("Data successfully Added")
 
   let modal = document.getElementById("staticBackdrop");
   let closeBtn = modal.querySelector('[data-bs-dismiss = "modal"]')
@@ -301,31 +299,31 @@ function addNewEduRow() {
 
   newEduField.innerHTML = `
   <td>
-    <input type="text" class="form-control" id="degree" required><br>
-    <span id="degreeError" class="error d-inline-block text-danger "></span>
+    <input type="text" class="form-control" id="degree" required>
+    <span id="degreeError" class="error d-inline-block text-danger"></span>
   </td>
   <td>
-    <input type="text" class="form-control" id="school" required><br>
-    <span id="schoolError" class="error d-inline-block text-danger "></span>
+    <input type="text" class="form-control" id="school" required>
+    <span id="schoolError" class="error d-inline-block text-danger"></span>
   </td>
   <td>
-    <input type="date" class="form-control" id="startDate" required><br>
-    <span id="startDateError" class="error d-inline-block text-danger "></span>
+    <input type="date" class="form-control" id="startDate" required>
+    <span id="startDateError" class="error d-inline-block text-danger"></span>
   </td>
   <td>
-    <input type="date" class="form-control" id="passYear" required><br>
-    <span id="passYearError" class="error d-inline-block text-danger "></span>
+    <input type="date" class="form-control" id="passYear" required>
+    <span id="passYearError" class="error d-inline-block text-danger"></span>
   </td>
   <td>
-    <input type="number" class="form-control" id="percentage"  min="0" max="100" placeholder="Don't use % sign" step="0.01" required><br>
-    <span id="percentageError" class="error d-inline-block text-danger "></span>
+    <input type="number" class="form-control" id="percentage"  min="0" max="100" placeholder="Don't use % sign" step="0.01" required>
+    <span id="percentageError" class="error d-inline-block text-danger"></span>
   </td>
   <td>
-    <input type="number" class="form-control" id="backlog" min="0" placeholder="If Any" required><br>
+    <input type="number" class="form-control" id="backlog" min="0" placeholder="If Any" required>
     <span id="backlogError" class="error d-inline-block text-danger "></span>
   </td>
   <td>
-    <a class="delete" style="cursor: pointer" onclick="removeEduRow()">&times</a>
+    <a class="delete" style="cursor: pointer" onclick="removeUpdatedEduRow()">&times</a>
   </td>
     `;
   eduBody.appendChild(newEduField);
